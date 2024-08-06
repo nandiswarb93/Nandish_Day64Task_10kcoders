@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration and Login</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f4f4f4;
+      }
+      h2 {
+        margin-top: 0;
+      }
+      form {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        margin-bottom: 8px;
+      }
+      input[type="text"], input[type="password"] {
+        width: calc(100% - 20px);
+        padding: 8px 10px;
+        margin-bottom: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      input[type="button"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      input[type="button"]:hover {
+        background-color: #45a049;
+      }
+      #greeting {
+        text-align: center;
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <h2>Register</h2>
+      <form id="registration-form">
+        <label for="reg-username">Enter username</label>
+        <input type="text" id="reg-username" /><br />
+
+        <label for="reg-password">Enter password</label>
+        <input type="password" id="reg-password" /><br />
+
+        <input type="button" value="Register" id="register" />
+      </form>
+    </div>
+
+    <div>
+      <h2>Login</h2>
+      <form id="login-form">
+        <label for="login-username">Enter username</label>
+        <input type="text" id="login-username" /><br />
+
+        <label for="login-password">Enter password</label>
+        <input type="password" id="login-password" /><br />
+
+        <input type="button" value="Login" id="login" />
+      </form>
+    </div>
+
+    <div id="greeting" style="display:none;">
+      <h2>Welcome, <span id="user-name"></span>!</h2>
+    </div>
+
+    <script>
+      document.getElementById('register').addEventListener('click', function () {
+        var username = document.getElementById('reg-username').value;
+        var password = document.getElementById('reg-password').value;
+
+        if (username === "" || password === "") {
+          alert('Please provide credentials.');
+          return;
+        }
+
+        var users = JSON.parse(localStorage.getItem('users')) || [];
+
+        var userExists = users.some(function (user) {
+          return user.username === username;
+        });
+
+        if (userExists) {
+          alert('Username already exists. Please choose a different username.');
+        } else {
+          users.push({ username: username, password: password });
+          localStorage.setItem('users', JSON.stringify(users));
+          alert('Registration successful! You can now log in.');
+        }
+      });
+
+      document.getElementById('login').addEventListener('click', function () {
+        var username = document.getElementById('login-username').value;
+        var password = document.getElementById('login-password').value;
+
+        var users = JSON.parse(localStorage.getItem('users')) || [];
+
+        var user = users.find(function (user) {
+          return user.username === username && user.password === password;
+        });
+
+        if (user) {
+          document.getElementById('greeting').style.display = 'block';
+          document.getElementById('user-name').textContent = username;
+          window.open("index1.html")
+        } else {
+          alert('Invalid username or password.');
+        }
+      });
+    </script>
+  </body>
+</html>
